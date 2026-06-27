@@ -1,0 +1,288 @@
+:root {
+  --bg-color: #040814;
+  --accent-cyan: #00f0ff;
+  --accent-purple: #8a2be2;
+  --accent-green: #00ff88;
+  --accent-blue: #0044ff;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-glow: rgba(0, 240, 255, 0.2);
+  
+  --text-primary: #e0e6ed;
+  --text-secondary: #8b9bb4;
+  
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Elements */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Futuristic Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--glass-glow);
+  box-shadow: 0 8px 32px var(--glass-glow);
+}
+
+/* App Layout */
+#root {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* 3D Canvas Background */
+.canvas-container {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none; /* Let clicks pass through to interactive elements below, wait, Drei orbit controls need pointer events */
+}
+
+/* Content Container above canvas */
+.app-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Pass events to canvas where empty */
+}
+
+.app-content > * {
+  pointer-events: auto; /* Re-enable pointer events for actual UI elements */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  height: calc(100vh - 40px);
+  margin: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+.nav-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Main Area */
+.main-area {
+  flex-grow: 1;
+  padding: 20px 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+}
+
+.glow-button {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(138, 43, 226, 0.2));
+  border: 1px solid var(--accent-cyan);
+  color: var(--text-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.glow-button:hover {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.4), rgba(138, 43, 226, 0.4));
+  animation: pulseGlow 1.5s infinite;
+}
+
+/* Page Layout */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  margin-bottom: 12px;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #fff, var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Grid Layouts */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  #root { flex-direction: column; }
+  .sidebar { width: auto; height: auto; margin: 10px; padding: 16px; flex-direction: row; flex-wrap: wrap;}
+  .main-area { padding: 10px; }
+}
+
+/* Card styles */
+.stat-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.stat-change {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.stat-change.positive { color: var(--accent-green); }
+.stat-change.negative { color: #ff3366; }
+
+/* Chart Container */
+.chart-container {
+  height: 300px;
+  width: 100%;
+}
